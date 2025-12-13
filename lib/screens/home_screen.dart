@@ -3,8 +3,24 @@ import 'package:provider/provider.dart';
 import '../providers/post_provider.dart';
 import '../components/post_card.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool _initialized = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialized) {
+      Provider.of<PostProvider>(context, listen: false).fetchPosts();
+      _initialized = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
