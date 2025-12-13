@@ -10,15 +10,23 @@ class NewsService {
     ),
   );
 
-  Future<List<Post>> fetchPosts({int page = 1, int perPage = 10, String? search, int? categoryId}) async {
+  Future<List<Post>> fetchPosts({
+    int page = 1,
+    int perPage = 10,
+    String? search,
+    int? categoryId,
+  }) async {
     try {
-      final response = await _dio.get('posts', queryParameters: {
-        'page': page,
-        'per_page': perPage,
-        if (search != null && search.isNotEmpty) 'search': search,
-        if (categoryId != null) 'categories': categoryId,
-        '_embed': 1, // Para obtener imágenes destacadas y autor
-      });
+      final response = await _dio.get(
+        'posts',
+        queryParameters: {
+          'page': page,
+          'per_page': perPage,
+          if (search != null && search.isNotEmpty) 'search': search,
+          if (categoryId != null) 'categories': categoryId,
+          '_embed': 1, // Para obtener imágenes destacadas y autor
+        },
+      );
       final List data = response.data;
       return data.map((json) => Post.fromJson(_mapPostJson(json))).toList();
     } catch (e) {
@@ -35,11 +43,14 @@ class NewsService {
       'content': json['content']?['rendered'] ?? '',
       'link': json['link'] ?? '',
       'date': json['date'],
-      'featuredImage': json['_embedded']?['wp:featuredmedia'] != null &&
+      'featuredImage':
+          json['_embedded']?['wp:featuredmedia'] != null &&
               (json['_embedded']['wp:featuredmedia'] as List).isNotEmpty
           ? json['_embedded']['wp:featuredmedia'][0]['source_url']
           : null,
-      'categories': (json['categories'] as List?)?.map((e) => e.toString()).toList(),
+      'categories': (json['categories'] as List?)
+          ?.map((e) => e.toString())
+          .toList(),
     };
   }
 }

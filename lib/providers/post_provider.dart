@@ -20,7 +20,11 @@ class PostProvider extends ChangeNotifier {
   bool _hasMore = true;
   bool get hasMore => _hasMore;
 
-  Future<void> fetchPosts({bool refresh = false, String? search, int? categoryId}) async {
+  Future<void> fetchPosts({
+    bool refresh = false,
+    String? search,
+    int? categoryId,
+  }) async {
     if (refresh) {
       _page = 1;
       _posts = [];
