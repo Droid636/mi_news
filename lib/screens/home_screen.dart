@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import '../providers/post_provider.dart';
 
 import '../components/post_card.dart';
+
 import '../components/news_search_bar.dart';
+import '../components/news_bottom_nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool _initialized = false;
   String? _lastSearch;
+  int _selectedIndex = 0;
 
   @override
   void didChangeDependencies() {
@@ -63,6 +66,15 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: NewsBottomNavBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+            // Aquí puedes manejar la navegación entre pantallas
+          });
+        },
       ),
     );
   }
