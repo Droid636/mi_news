@@ -50,7 +50,13 @@ class _HomeScreenState extends State<HomeScreen> {
               } else if (provider.status == PostStatus.error) {
                 return Center(child: Text('Error: \\${provider.errorMessage}'));
               } else if (provider.status == PostStatus.empty) {
-                return const Center(child: Text('No hay noticias.'));
+                if (_lastSearch != null && _lastSearch!.isNotEmpty) {
+                  return const Center(
+                    child: Text('No se encontraron noticias para tu búsqueda.'),
+                  );
+                } else {
+                  return const Center(child: Text('No hay noticias.'));
+                }
               }
               return ListView.builder(
                 itemCount: provider.posts.length,
