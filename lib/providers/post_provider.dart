@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../models/post.dart';
 import '../services/news_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 enum PostStatus { initial, loading, success, empty, error }
 
@@ -44,6 +46,12 @@ class PostProvider extends ChangeNotifier {
       );
       if (refresh) {
         _posts = newPosts;
+        // Guardar en cache solo si no hay búsqueda ni categoría
+        if ((search == null || search.isEmpty) && categoryId == null) {
+          final prefs = await SharedPreferences.getInstance();
+          final data = newPosts.map((e) => jsonEncode(e.toJson())).toList();
+          await prefs.setStringList('cached_posts', data);
+        }
       } else {
         _posts.addAll(newPosts);
       }
@@ -51,8 +59,22 @@ class PostProvider extends ChangeNotifier {
       _status = _posts.isEmpty ? PostStatus.empty : PostStatus.success;
       _page++;
     } catch (e) {
-      _errorMessage = e.toString();
-      _status = PostStatus.error;
+      // Intentar cargar del cache si es la lista principal
+      if ((search == null || search.isEmpty) && categoryId == null) {
+        final prefs = await SharedPreferences.getInstance();
+        final cached = prefs.getStringList('cached_posts') ?? [];
+        if (cached.isNotEmpty) {
+          _posts = cached.map((e) => Post.fromJson(jsonDecode(e))).toList();
+          _status = PostStatus.success;
+          _errorMessage = 'Sin conexión. Mostrando noticias guardadas.';
+        } else {
+          _errorMessage = 'No hay conexión y no hay noticias guardadas.';
+          _status = PostStatus.error;
+        }
+      } else {
+        _errorMessage = e.toString();
+        _status = PostStatus.error;
+      }
     }
     notifyListeners();
   }
