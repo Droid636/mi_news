@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/post_provider.dart';
 import 'screens/home_screen.dart';
+import 'providers/bookmarks_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +14,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => PostProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => PostProvider()),
+        ChangeNotifierProvider(create: (_) => BookmarksProvider()),
+      ],
       child: MaterialApp(
         title: 'Mi News',
         theme: ThemeData(
