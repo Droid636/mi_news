@@ -36,9 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Arco superior
-            const CustomPaint(size: Size(180, 60), painter: _ArcPainter()),
-            SizedBox(height: 8),
+            // ...existing code...
             // Logo de noticiero como imagen
             Image.asset('assets/images/logo.png', width: 150, height: 150),
             SizedBox(height: 16),
@@ -80,23 +78,4 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
-// Dibuja el arco superior tipo Disney+
-class _ArcPainter extends CustomPainter {
-  const _ArcPainter();
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..shader = const LinearGradient(
-        colors: [AppTheme.splashArc, AppTheme.splashLogoWhite],
-        begin: Alignment.centerLeft,
-        end: Alignment.centerRight,
-      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height))
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 6;
-    final Rect rect = Rect.fromLTWH(0, 0, size.width, size.height * 2);
-    canvas.drawArc(rect, 3.14, -3.14, false, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
+// (Clase _ArcPainter eliminada porque ya no se usa)
