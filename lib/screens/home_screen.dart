@@ -73,6 +73,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               }
 
+              if (provider.posts.isEmpty) {
+                return Center(
+                  child: Text(
+                    _lastSearch != null && _lastSearch!.isNotEmpty
+                        ? 'No se encontraron noticias para "${_lastSearch!}".'
+                        : 'No hay noticias disponibles.',
+                    style: const TextStyle(fontSize: 18, color: Colors.grey),
+                    textAlign: TextAlign.center,
+                  ),
+                );
+              }
               return ListView.builder(
                 itemCount: provider.posts.length,
                 itemBuilder: (context, index) {
