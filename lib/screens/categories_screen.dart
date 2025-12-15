@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import '../models/post.dart';
+import '../components/post_card.dart';
 
 class Category {
   final int id;
@@ -144,13 +145,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               itemCount: _posts.length,
               itemBuilder: (context, index) {
                 final post = _posts[index];
-                return ListTile(
-                  title: Text(post.title),
-                  subtitle: Text(post.excerpt),
-                  onTap: () {
-                    // Aquí puedes abrir el detalle si lo deseas
-                  },
-                );
+                return PostCard(post: post);
               },
             ),
           ),
