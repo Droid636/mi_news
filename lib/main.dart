@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'providers/post_provider.dart';
 import 'screens/home_screen.dart';
 import 'providers/bookmarks_provider.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +24,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),
-        home: const HomeScreen(),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const SplashScreen(),
+          '/home': (context) => const HomeScreen(),
+        },
       ),
     );
   }
