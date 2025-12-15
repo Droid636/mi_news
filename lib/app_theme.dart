@@ -22,6 +22,15 @@ class AppTheme {
   static const Color splashSubtitle = Color(0xFFB2E6FF);
 
   // =====================
+  // Colores del Buscador
+  // =====================
+  static const Color searchBackground = Color(0xFFF6FAFD); // fondo claro
+  static const Color searchBorder = Color(0xFFE0E6ED); // borde
+  static const Color searchIconBg = Color(0xFF3578C6); // azul icono
+  static const Color searchIconColor = Colors.white; // icono lupa
+  static const Color searchHint = Color(0xFFB0B8C1); // hint text
+
+  // =====================
   // Colores del HomeScreen
   // =====================
   // (Aquí puedes agregar colores para el home)
