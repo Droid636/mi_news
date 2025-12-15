@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/post.dart';
+import 'post_detail_modal.dart';
 
 class PostCard extends StatelessWidget {
   final Post post;
@@ -43,8 +44,14 @@ class PostCard extends StatelessWidget {
         ),
 
         onTap: () {
-          // Navegación al detalle del post
-          // Navigator.push(...)
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            builder: (context) => PostDetailModal(post: post),
+          );
         },
       ),
     );
