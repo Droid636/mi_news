@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:dio/dio.dart';
 
 import '../providers/post_provider.dart';
 import '../components/post_card.dart';
@@ -17,24 +16,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final Dio _dio = Dio(
-    BaseOptions(baseUrl: 'https://news.freepi.io/wp-json/wp/v2/'),
-  );
-
-  List<Category> _categories = [];
-  int? _selectedCategoryId;
-  bool _loadingCategories = true;
-  String? _catError;
-
   bool _initialized = false;
   String? _lastSearch;
   int _selectedIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchCategories();
-  }
 
   @override
   void didChangeDependencies() {
@@ -45,96 +29,22 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<void> _fetchCategories() async {
-    try {
-      setState(() {
-        _loadingCategories = true;
-        _catError = null;
-      });
-
-      final response = await _dio.get(
-        'categories',
-        queryParameters: {'per_page': 20},
-      );
-
-      final List data = response.data;
-      _categories = data
-          .map((json) => Category(id: json['id'], name: json['name']))
-          .toList();
-    } catch (e) {
-      _catError = 'Error al cargar categorías';
-    } finally {
-      setState(() {
-        _loadingCategories = false;
-      });
-    }
-  }
-
   Widget _buildHomeTab() {
     return Column(
       children: [
+        /// BUSCADOR
         NewsSearchBar(
           initialValue: _lastSearch,
           onSearch: (query) {
             _lastSearch = query;
-            Provider.of<PostProvider>(context, listen: false).fetchPosts(
-              refresh: true,
-              search: query,
-              categoryId: _selectedCategoryId,
-            );
+            Provider.of<PostProvider>(
+              context,
+              listen: false,
+            ).fetchPosts(refresh: true, search: query);
           },
         ),
 
-        // Categorías
-        if (_loadingCategories)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 12),
-            child: CircularProgressIndicator(),
-          )
-        else if (_catError != null)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Text(_catError!),
-          )
-        else
-          SizedBox(
-            height: 48,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: _categories.length,
-              itemBuilder: (context, index) {
-                final cat = _categories[index];
-                final selected = cat.id == _selectedCategoryId;
-
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 6,
-                    vertical: 8,
-                  ),
-                  child: ChoiceChip(
-                    label: Text(cat.name),
-                    selected: selected,
-                    onSelected: (_) {
-                      setState(() {
-                        _selectedCategoryId = selected ? null : cat.id;
-                      });
-
-                      Provider.of<PostProvider>(
-                        context,
-                        listen: false,
-                      ).fetchPosts(
-                        refresh: true,
-                        search: _lastSearch,
-                        categoryId: selected ? null : cat.id,
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-
-        // Lista de posts
+        /// LISTA DE POSTS
         Expanded(
           child: Consumer<PostProvider>(
             builder: (context, provider, _) {
@@ -154,11 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Provider.of<PostProvider>(
                             context,
                             listen: false,
-                          ).fetchPosts(
-                            refresh: true,
-                            search: _lastSearch,
-                            categoryId: _selectedCategoryId,
-                          );
+                          ).fetchPosts(refresh: true, search: _lastSearch);
                         },
                         child: const Text('Reintentar'),
                       ),
@@ -181,7 +87,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildBookmarksTab() => const BookmarksScreen();
-
   Widget _buildCategoriesTab() => const CategoriesScreen();
 
   @override
