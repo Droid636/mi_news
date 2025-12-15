@@ -32,6 +32,15 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Noticias Recientes')),
+      drawer: NewsDrawer(
+        selectedIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+            // Aquí puedes manejar la navegación entre pantallas
+          });
+        },
+      ),
       body: Column(
         children: [
           NewsSearchBar(
@@ -66,15 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ],
-      ),
-      bottomNavigationBar: NewsBottomNavBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-            // Aquí puedes manejar la navegación entre pantallas
-          });
-        },
       ),
     );
   }
