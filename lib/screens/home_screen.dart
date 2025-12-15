@@ -69,86 +69,98 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildHomeTab() {
     return Column(
-      children: [
-        NewsSearchBar(
-          onSearch: (query) {
-            _lastSearch = query;
-            Provider.of<PostProvider>(context, listen: false).fetchPosts(
-              refresh: true,
-              search: query,
-              categoryId: _selectedCategoryId,
-            );
-          },
-          initialValue: _lastSearch,
-        ),
-        if (_loadingCategories)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 12),
-            child: Center(child: CircularProgressIndicator()),
-          )
-        else if (_catError != null)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Center(child: Text(_catError!)),
-          )
-        else
-          SizedBox(
-            height: 48,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: _categories.length,
-              itemBuilder: (context, index) {
-                final cat = _categories[index];
-                final selected = cat.id == _selectedCategoryId;
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 6,
-                    vertical: 8,
-                  ),
-                  child: ChoiceChip(
-                    label: Text(cat.name),
-                    selected: selected,
-                    onSelected: (val) {
-                      setState(() {
-                        _selectedCategoryId = selected ? null : cat.id;
-                      });
-                      Provider.of<PostProvider>(
-                        context,
-                        listen: false,
-                      ).fetchPosts(
-                        refresh: true,
-                        search: _lastSearch,
-                        categoryId: selected ? null : cat.id,
-                      );
-                    },
-                  ),
+      return Column(
+        children: [
+          NewsSearchBar(
+            onSearch: (query) {
+              _lastSearch = query;
+              Provider.of<PostProvider>(context, listen: false).fetchPosts(
+                refresh: true,
+                search: query,
+                categoryId: _selectedCategoryId,
+              );
+            },
+            initialValue: _lastSearch,
+          ),
+          if (_loadingCategories)
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 12),
+              child: Center(child: CircularProgressIndicator()),
+            )
+          else if (_catError != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Center(child: Text(_catError!)),
+            )
+          else
+            SizedBox(
+              height: 48,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: _categories.length,
+                itemBuilder: (context, index) {
+                  final cat = _categories[index];
+                  final selected = cat.id == _selectedCategoryId;
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+                    child: ChoiceChip(
+                      label: Text(cat.name),
+                      selected: selected,
+                      onSelected: (val) {
+                        setState(() {
+                          _selectedCategoryId = selected ? null : cat.id;
+                        });
+                        Provider.of<PostProvider>(
+                          context,
+                          listen: false,
+                        ).fetchPosts(
+                          refresh: true,
+                          search: _lastSearch,
+                          categoryId: selected ? null : cat.id,
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+          Expanded(
+            child: Consumer<PostProvider>(
+              builder: (context, provider, _) {
+                if (provider.status == PostStatus.loading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (provider.status == PostStatus.error) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(provider.errorMessage ?? 'Error desconocido'),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () {
+                            Provider.of<PostProvider>(context, listen: false).fetchPosts(
+                              refresh: true,
+                              search: _lastSearch,
+                              categoryId: _selectedCategoryId,
+                            );
+                          },
+                          child: const Text('Reintentar'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  itemCount: provider.posts.length,
+                  itemBuilder: (context, index) {
+                    return PostCard(post: provider.posts[index]);
+                  },
                 );
               },
             ),
           ),
-        Expanded(
-          child: Consumer<PostProvider>(
-            builder: (context, provider, _) {
-              if (provider.status == PostStatus.loading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (provider.status == PostStatus.error) {
-                return Center(child: Text('Error: \\${provider.errorMessage}'));
-              } else if (provider.status == PostStatus.empty) {
-                if (_lastSearch != null && _lastSearch!.isNotEmpty) {
-                  return const Center(
-                    child: Text('No se encontraron noticias para tu búsqueda.'),
-                  );
-                } else {
-                  return const Center(child: Text('No hay noticias.'));
-                }
-              }
-              return ListView.builder(
-                itemCount: provider.posts.length,
-                itemBuilder: (context, index) {
-                  return PostCard(post: provider.posts[index]);
-                },
-              );
-            },
+        ],
+      );
           ),
         ),
       ],
