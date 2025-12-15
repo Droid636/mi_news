@@ -7,6 +7,7 @@ import '../components/post_card.dart';
 import '../components/news_search_bar.dart';
 import '../components/news_bottom_nav_bar.dart';
 import 'bookmarks_screen.dart';
+import 'categories_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -76,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildCategoriesTab() {
-    return const Center(child: Text('Categorías (próximamente)'));
+    return const CategoriesScreen();
   }
 
   @override
