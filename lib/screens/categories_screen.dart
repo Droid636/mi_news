@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 import '../models/post.dart';
 import '../components/post_card.dart';
 
@@ -61,6 +63,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       _error = null;
       _posts = [];
     });
+    final cacheKey = 'cat_posts_[0m$categoryId';
     try {
       final response = await _dio.get(
         'posts',
@@ -91,8 +94,20 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             }),
           )
           .toList();
+      // Guardar cache
+      final prefs = await SharedPreferences.getInstance();
+      final dataCache = _posts.map((e) => jsonEncode(e.toJson())).toList();
+      await prefs.setStringList(cacheKey, dataCache);
     } catch (e) {
-      _error = 'Error al cargar noticias de la categoría';
+      // Leer cache si hay error
+      final prefs = await SharedPreferences.getInstance();
+      final cached = prefs.getStringList(cacheKey) ?? [];
+      if (cached.isNotEmpty) {
+        _posts = cached.map((e) => Post.fromJson(jsonDecode(e))).toList();
+        _error = 'Sin conexión. Mostrando noticias guardadas.';
+      } else {
+        _error = 'No hay conexión y no hay noticias guardadas.';
+      }
     }
     setState(() {
       _loadingPosts = false;
@@ -136,8 +151,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         if (_loadingPosts)
           const Expanded(child: Center(child: CircularProgressIndicator())),
         if (!_loadingPosts && _posts.isEmpty && _selectedCategoryId != null)
-          const Expanded(
-            child: Center(child: Text('No hay noticias en esta categoría.')),
+          Expanded(
+            child: Center(
+              child: Text(_error ?? 'No hay noticias en esta categoría.'),
+            ),
           ),
         if (!_loadingPosts && _posts.isNotEmpty)
           Expanded(
