@@ -6,6 +6,7 @@ import '../components/post_card.dart';
 
 import '../components/news_search_bar.dart';
 import '../components/news_bottom_nav_bar.dart';
+import 'bookmarks_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,10 +36,16 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: NewsDrawer(
         selectedIndex: _selectedIndex,
         onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-            // Aquí puedes manejar la navegación entre pantallas
-          });
+          Navigator.pop(context);
+          if (index == 1) {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const BookmarksScreen()));
+          } else {
+            setState(() {
+              _selectedIndex = index;
+            });
+          }
         },
       ),
       body: Column(

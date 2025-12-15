@@ -25,7 +25,20 @@ class PostCard extends StatelessWidget {
             : const Icon(Icons.image, size: 40),
         title: Text(post.title),
         subtitle: Text(post.excerpt),
-        onTap: () {},
+        trailing: IconButton(
+          icon: const Icon(Icons.bookmark_border),
+          onPressed: () {
+            // Aquí irá la lógica para guardar como bookmark
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Funcionalidad de bookmark pendiente.'),
+              ),
+            );
+          },
+        ),
+        onTap: () {
+          // ...navegación a detalle...
+        },
       ),
     );
   }
