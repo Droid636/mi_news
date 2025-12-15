@@ -39,8 +39,8 @@ class _SplashScreenState extends State<SplashScreen> {
             // Arco superior
             const CustomPaint(size: Size(180, 60), painter: _ArcPainter()),
             SizedBox(height: 8),
-            // Logo de noticiero elegante
-            Icon(Icons.newspaper, size: 80, color: AppTheme.splashLogoWhite),
+            // Logo de noticiero como imagen
+            Image.asset('assets/images/logo.png', width: 150, height: 150),
             SizedBox(height: 16),
             Text(
               'NovaPress',
