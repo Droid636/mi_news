@@ -1,6 +1,31 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
+  // =====================
+  // Colores de navegación
+  // =====================
+  // (Aquí puedes agregar colores para la nav bar, etc)
+
+  // =====================
+  // Colores del SplashScreen
+  // =====================
+  static const Color splashBackgroundTop = Color(
+    0xFF141A32,
+  ); // azul oscuro superior
+  static const Color splashBackgroundBottom = Color(
+    0xFF22306C,
+  ); // azul oscuro inferior
+  static const Color splashArc = Color(0xFF1EC6FF); // arco degradado
+  static const Color splashLogoWhite = Colors.white;
+  static const Color splashLogoGlow = Color(0xFFB2E6FF); // brillo
+  static const Color splashText = Colors.white;
+  static const Color splashSubtitle = Color(0xFFB2E6FF);
+
+  // =====================
+  // Colores del HomeScreen
+  // =====================
+  // (Aquí puedes agregar colores para el home)
+
   static ThemeData get lightTheme {
     return ThemeData(
       // Aquí se definirán los colores y estilos globales
