@@ -19,16 +19,41 @@ class PostDetailScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (post.featuredImage != null)
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                post.featuredImage!,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) =>
-                    const Icon(Icons.broken_image, size: 80),
-              ),
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    post.featuredImage!,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) =>
+                        const Icon(Icons.broken_image, size: 80),
+                  ),
+                ),
+                Positioned(
+                  top: 10,
+                  right: 16,
+                  child: Material(
+                    color: Colors.white,
+                    shape: const CircleBorder(),
+                    elevation: 4,
+                    child: InkWell(
+                      customBorder: const CircleBorder(),
+                      onTap: () => Navigator.of(context).pop(),
+                      child: const Padding(
+                        padding: EdgeInsets.all(6),
+                        child: Icon(
+                          Icons.close_rounded,
+                          size: 26,
+                          color: Color(0xFF3578C6),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          const SizedBox(height: 18),
+          if (post.featuredImage != null) const SizedBox(height: 18),
           Text(
             post.title,
             style: const TextStyle(

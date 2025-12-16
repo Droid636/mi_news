@@ -26,27 +26,7 @@ class PostDetailModal extends StatelessWidget {
           children: [
             // Contenido principal scrollable
             // Botón cerrar flotante
-            Positioned(
-              top: 10,
-              right: 16,
-              child: Material(
-                color: Colors.white,
-                shape: const CircleBorder(),
-                elevation: 4,
-                child: InkWell(
-                  customBorder: const CircleBorder(),
-                  onTap: () => Navigator.of(context).pop(),
-                  child: const Padding(
-                    padding: EdgeInsets.all(6),
-                    child: Icon(
-                      Icons.close_rounded,
-                      size: 26,
-                      color: Color(0xFF3578C6),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+
             // Contenido principal scrollable
             Padding(
               padding: const EdgeInsets.only(top: 48),
@@ -60,27 +40,6 @@ class PostDetailModal extends StatelessWidget {
             ),
 
             // Botón cerrar flotante
-            Positioned(
-              top: 10,
-              right: 16,
-              child: Material(
-                color: Colors.white,
-                shape: const CircleBorder(),
-                elevation: 4,
-                child: InkWell(
-                  customBorder: const CircleBorder(),
-                  onTap: () => Navigator.of(context).pop(),
-                  child: const Padding(
-                    padding: EdgeInsets.all(6),
-                    child: Icon(
-                      Icons.close_rounded,
-                      size: 26,
-                      color: Color(0xFF3578C6),
-                    ),
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
