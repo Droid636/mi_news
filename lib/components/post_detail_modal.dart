@@ -22,25 +22,9 @@ class PostDetailModal extends StatelessWidget {
       ),
       child: SafeArea(
         top: false,
-        child: Stack(
-          children: [
-            // Contenido principal scrollable
-            // Botón cerrar flotante
-
-            // Contenido principal scrollable
-            Padding(
-              padding: const EdgeInsets.only(top: 48),
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 10,
-                ),
-                child: PostDetailScreen(post: post),
-              ),
-            ),
-
-            // Botón cerrar flotante
-          ],
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          child: PostDetailScreen(post: post),
         ),
       ),
     );
