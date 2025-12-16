@@ -159,14 +159,37 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         ),
         child: SafeArea(
           child: Center(
-            child: Text(
-              _error!,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.wifi_off, color: Colors.white, size: 54),
+                const SizedBox(height: 18),
+                const Text(
+                  'No se pudieron cargar las categorías.',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  'Por favor, revisa tu conexión a internet.',
+                  style: TextStyle(color: Colors.white70, fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.navSelected,
+                    foregroundColor: Colors.white,
+                  ),
+                  icon: const Icon(Icons.refresh),
+                  label: const Text('Reintentar'),
+                  onPressed: _fetchCategories,
+                ),
+              ],
             ),
           ),
         ),
