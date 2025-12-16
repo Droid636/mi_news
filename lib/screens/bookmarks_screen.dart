@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/bookmarks_provider.dart';
 import '../components/post_card.dart';
+import '../app_theme.dart';
 
 class BookmarksScreen extends StatelessWidget {
   const BookmarksScreen({super.key});
@@ -9,19 +10,63 @@ class BookmarksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Bookmarks')),
+      backgroundColor: AppTheme.bookmarksBackground,
+      appBar: AppBar(
+        title: const Text(
+          'Favoritos',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: AppTheme.bookmarksCard,
+        foregroundColor: AppTheme.bookmarksTitle,
+        elevation: 1,
+      ),
       body: Consumer<BookmarksProvider>(
         builder: (context, bookmarksProvider, _) {
           final bookmarks = bookmarksProvider.bookmarks;
           if (bookmarks.isEmpty) {
-            return const Center(
-              child: Text('Aquí aparecerán tus noticias guardadas.'),
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.bookmark_border,
+                    size: 64,
+                    color: AppTheme.bookmarksEmptyIcon,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Aquí aparecerán tus noticias guardadas.',
+                    style: TextStyle(
+                      color: AppTheme.bookmarksTitle,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '¡Guarda tus artículos favoritos para leerlos después!',
+                    style: TextStyle(
+                      color: AppTheme.bookmarksSubtitle,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              ),
             );
           }
           return ListView.builder(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
             itemCount: bookmarks.length,
             itemBuilder: (context, index) {
-              return PostCard(post: bookmarks[index]);
+              return Card(
+                color: AppTheme.bookmarksCard,
+                elevation: 2,
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: PostCard(post: bookmarks[index]),
+              );
             },
           );
         },

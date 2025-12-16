@@ -41,6 +41,15 @@ class AppTheme {
   // =====================
   // (Aquí puedes agregar colores para el home)
 
+  // =====================
+  // Colores de Bookmarks
+  // =====================
+  static const Color bookmarksBackground = Color(0xFFF6FAFD); // fondo claro
+  static const Color bookmarksCard = Colors.white; // fondo de tarjeta
+  static const Color bookmarksTitle = Color(0xFF22306C); // azul oscuro
+  static const Color bookmarksSubtitle = Color(0xFF3578C6); // azul rey
+  static const Color bookmarksEmptyIcon = Color(0xFFB0B8C1); // gris azulado
+
   static ThemeData get lightTheme {
     return ThemeData(
       // Aquí se definirán los colores y estilos globales
