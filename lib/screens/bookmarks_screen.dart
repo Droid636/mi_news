@@ -53,7 +53,7 @@ class BookmarksScreen extends StatelessWidget {
                     Text(
                       'Aquí aparecerán tus noticias guardadas.',
                       style: TextStyle(
-                        color: AppTheme.splashBackgroundTop,
+                        color: AppTheme.splashText,
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),
@@ -62,7 +62,7 @@ class BookmarksScreen extends StatelessWidget {
                     Text(
                       '¡Guarda tus artículos favoritos para leerlos después!',
                       style: TextStyle(
-                        color: AppTheme.navSelected,
+                        color: AppTheme.splashLogoGlow,
                         fontSize: 15,
                       ),
                     ),
