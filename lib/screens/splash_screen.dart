@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Image.asset('assets/images/logo.png', width: 150, height: 150),
             SizedBox(height: 16),
             Text(
-              'NovaPress',
+              'NovaExpress',
               style: TextStyle(
                 fontFamily: 'Merriweather',
                 fontSize: 40,

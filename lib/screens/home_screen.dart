@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 35),
               // Título
               Text(
-                'Mi News',
+                'NovaExpress',
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
