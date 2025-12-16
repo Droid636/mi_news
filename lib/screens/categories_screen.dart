@@ -59,7 +59,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       _categories = data
           .map((json) => Category(id: json['id'], name: json['name']))
           .toList();
-    } catch (e) {
+    } catch (_) {
       _error = 'Error al cargar categorías';
     }
 
@@ -88,7 +88,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       final response = await _dio.get(
         'posts',
         queryParameters: {
-          if (categoryId != -1) 'categories': categoryId,
+          'categories': categoryId,
           '_embed': 1,
           'per_page': 10,
         },
@@ -116,10 +116,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       }).toList();
 
       final prefs = await SharedPreferences.getInstance();
-      final cache = _posts.map((post) => jsonEncode(post.toJson())).toList();
-
+      final cache = _posts.map((p) => jsonEncode(p.toJson())).toList();
       await prefs.setStringList(cacheKey, cache);
-    } catch (e) {
+    } catch (_) {
       final prefs = await SharedPreferences.getInstance();
       final cached = prefs.getStringList(cacheKey) ?? [];
 
@@ -142,57 +141,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
   Widget build(BuildContext context) {
     if (_loadingCategories) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(child: _CustomLoader());
     }
 
     if (_error != null && _categories.isEmpty) {
-      return Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              AppTheme.splashBackgroundTop,
-              AppTheme.splashBackgroundBottom,
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.wifi_off, color: Colors.white, size: 54),
-                const SizedBox(height: 18),
-                const Text(
-                  'No se pudieron cargar las categorías.',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  'Por favor, revisa tu conexión a internet.',
-                  style: TextStyle(color: Colors.white70, fontSize: 16),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 24),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.navSelected,
-                    foregroundColor: Colors.white,
-                  ),
-                  icon: const Icon(Icons.refresh),
-                  label: const Text('Reintentar'),
-                  onPressed: _fetchCategories,
-                ),
-              ],
-            ),
-          ),
-        ),
+      return Center(
+        child: Text(_error!, style: const TextStyle(color: Colors.white)),
       );
     }
 
@@ -209,27 +163,21 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       ),
       child: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ===============================
-            // TÍTULO
-            // ===============================
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-              child: Center(
-                child: Text(
-                  'Categorías',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
+            const SizedBox(height: 12),
+            const Text(
+              'Categorías',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
 
+            const SizedBox(height: 12),
+
             // ===============================
-            // CHIPS DE CATEGORÍAS
+            // CHIPS
             // ===============================
             SizedBox(
               height: 54,
@@ -242,34 +190,24 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   final cat = _categories[index];
                   final selected = cat.id == _selectedCategoryId;
 
-                  return AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                    margin: EdgeInsets.zero,
-                    child: ChoiceChip(
-                      label: Text(cat.name),
-                      selected: selected,
-                      onSelected: (_) {
-                        setState(() {
-                          _selectedCategoryId = cat.id;
-                        });
-                        _fetchPosts(cat.id);
-                      },
-                      selectedColor: AppTheme.navSelected,
-                      backgroundColor: Colors.white,
-                      labelStyle: TextStyle(
+                  return ChoiceChip(
+                    label: Text(cat.name),
+                    selected: selected,
+                    onSelected: (_) {
+                      setState(() => _selectedCategoryId = cat.id);
+                      _fetchPosts(cat.id);
+                    },
+                    selectedColor: AppTheme.navSelected,
+                    backgroundColor: Colors.white,
+                    labelStyle: TextStyle(
+                      color: selected ? Colors.white : AppTheme.bookmarksTitle,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    shape: StadiumBorder(
+                      side: BorderSide(
                         color: selected
-                            ? Colors.white
-                            : AppTheme.bookmarksTitle,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      shape: StadiumBorder(
-                        side: BorderSide(
-                          color: selected
-                              ? AppTheme.navSelected
-                              : AppTheme.searchBorder,
-                          width: selected ? 2 : 1,
-                        ),
+                            ? AppTheme.navSelected
+                            : Colors.transparent,
                       ),
                     ),
                   );
@@ -280,37 +218,26 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             const SizedBox(height: 8),
 
             // ===============================
-            // LISTA DE NOTICIAS
+            // LISTA
             // ===============================
             Expanded(
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 400),
-                switchInCurve: Curves.easeOutCubic,
-                switchOutCurve: Curves.easeInCubic,
                 child: _loadingPosts
-                    ? const Center(
-                        key: ValueKey('loading'),
-                        child: CircularProgressIndicator(),
-                      )
-                    : _posts.isEmpty && _selectedCategoryId != null
+                    ? const Center(child: _CustomLoader())
+                    : _posts.isEmpty
                     ? Center(
-                        key: ValueKey('empty'),
                         child: Text(
-                          _error ?? 'No hay noticias en esta categoría.',
+                          _error ?? 'No hay noticias.',
                           style: TextStyle(color: AppTheme.navUnselected),
                         ),
                       )
                     : ListView.builder(
-                        key: ValueKey('list_${_selectedCategoryId ?? 'none'}'),
-                        padding: const EdgeInsets.only(top: 8),
                         itemCount: _posts.length,
                         itemBuilder: (context, index) {
                           return TweenAnimationBuilder<double>(
-                            key: ValueKey(_posts[index].id),
                             tween: Tween(begin: 0, end: 1),
-                            duration: Duration(
-                              milliseconds: 400 + (index * 40),
-                            ),
+                            duration: Duration(milliseconds: 400 + index * 40),
                             builder: (context, value, child) => Opacity(
                               opacity: value,
                               child: Transform.translate(
@@ -326,6 +253,41 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// ================= LOADER =================
+
+class _CustomLoader extends StatefulWidget {
+  const _CustomLoader();
+
+  @override
+  State<_CustomLoader> createState() => _CustomLoaderState();
+}
+
+class _CustomLoaderState extends State<_CustomLoader>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(seconds: 1),
+  )..repeat();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 42,
+      height: 42,
+      child: CircularProgressIndicator(
+        strokeWidth: 4,
+        color: AppTheme.navSelected,
       ),
     );
   }

@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (provider.status == PostStatus.loading) {
                     return const Padding(
                       padding: EdgeInsets.only(top: 32),
-                      child: CircularProgressIndicator(),
+                      child: _CustomLoader(),
                     );
                   }
 
@@ -158,16 +158,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     return Container(
                       width: double.infinity,
                       height: 220,
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            AppTheme.splashBackgroundTop,
-                            AppTheme.splashBackgroundBottom,
-                          ],
-                        ),
-                      ),
                       alignment: Alignment.center,
                       child: Text(
                         _lastSearch != null && _lastSearch!.isNotEmpty
@@ -245,6 +235,78 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: (index) {
           setState(() => _selectedIndex = index);
         },
+      ),
+    );
+  }
+}
+
+// ================= LOADER PERSONALIZADO =================
+
+class _CustomLoader extends StatefulWidget {
+  const _CustomLoader();
+
+  @override
+  State<_CustomLoader> createState() => _CustomLoaderState();
+}
+
+class _CustomLoaderState extends State<_CustomLoader>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(seconds: 1),
+  )..repeat();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 48,
+      height: 48,
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          return Transform.rotate(
+            angle: _controller.value * 6.28319,
+            child: child,
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: SweepGradient(
+              colors: [
+                AppTheme.splashArc,
+                AppTheme.navSelected,
+                AppTheme.splashBackgroundTop,
+                AppTheme.splashArc.withOpacity(0.2),
+                AppTheme.splashArc,
+              ],
+              stops: const [0.0, 0.3, 0.6, 0.85, 1.0],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppTheme.splashArc.withOpacity(0.25),
+                blurRadius: 8,
+                spreadRadius: 1,
+              ),
+            ],
+          ),
+          child: Center(
+            child: Container(
+              width: 22,
+              height: 22,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
