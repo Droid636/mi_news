@@ -122,7 +122,7 @@ class PostCard extends StatelessWidget {
                       icon: Icon(
                         isBookmarked ? Icons.bookmark : Icons.bookmark_border,
                         color: isBookmarked
-                            ? Colors.amber
+                            ? AppTheme.searchIconBg
                             : AppTheme.bookmarksSubtitle.withOpacity(0.4),
                       ),
                       onPressed: () {
