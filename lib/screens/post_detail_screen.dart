@@ -8,25 +8,71 @@ class PostDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (post.featuredImage != null)
-          Center(
-            child: Image.network(
-              post.featuredImage!,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) =>
-                  const Icon(Icons.broken_image, size: 80),
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFFF6FAFD),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFE0E6ED), width: 1.2),
+      ),
+      padding: const EdgeInsets.all(18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (post.featuredImage != null)
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                post.featuredImage!,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) =>
+                    const Icon(Icons.broken_image, size: 80),
+              ),
+            ),
+          const SizedBox(height: 18),
+          Text(
+            post.title,
+            style: const TextStyle(
+              fontFamily: 'Merriweather',
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+              color: Color(0xFF22306C),
+              letterSpacing: 0.5,
             ),
           ),
-        const SizedBox(height: 16),
-        Text(post.title, style: Theme.of(context).textTheme.titleLarge),
-        const SizedBox(height: 8),
-        HtmlWidget(post.content),
-        const SizedBox(height: 16),
-        Text('Publicado: \\${post.date.toLocal()}'),
-      ],
+          const SizedBox(height: 10),
+          Container(
+            width: 60,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Color(0xFF3578C6),
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const SizedBox(height: 18),
+          HtmlWidget(
+            post.content,
+            textStyle: const TextStyle(
+              fontFamily: 'Georgia',
+              fontSize: 17,
+              color: Color(0xFF222222),
+              height: 1.6,
+            ),
+          ),
+          const SizedBox(height: 18),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              'Publicado: ${post.date.day}/${post.date.month}/${post.date.year}',
+              style: const TextStyle(
+                fontFamily: 'Merriweather',
+                fontSize: 13,
+                color: Color(0xFF3578C6),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

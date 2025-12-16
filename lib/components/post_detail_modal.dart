@@ -8,21 +8,67 @@ class PostDetailModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DraggableScrollableSheet(
-      expand: false,
-      initialChildSize: 0.9,
-      minChildSize: 0.5,
-      maxChildSize: 0.95,
-      builder: (context, scrollController) => SingleChildScrollView(
-        controller: scrollController,
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 16,
-            left: 8,
-            right: 8,
-            bottom: 32,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 18,
+            offset: const Offset(0, -4),
           ),
-          child: PostDetailScreen(post: post),
+        ],
+      ),
+      child: SafeArea(
+        top: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12,
+                left: 16,
+                right: 8,
+                bottom: 0,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Detalle de noticia',
+                      style: TextStyle(
+                        fontFamily: 'Merriweather',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Color(0xFF22306C),
+                        letterSpacing: 1.1,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.close_rounded,
+                      size: 28,
+                      color: Color(0xFF3578C6),
+                    ),
+                    onPressed: () => Navigator.of(context).pop(),
+                    tooltip: 'Cerrar',
+                  ),
+                ],
+              ),
+            ),
+            const Divider(height: 1, thickness: 1, color: Color(0xFFE0E6ED)),
+            Flexible(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 18,
+                ),
+                child: PostDetailScreen(post: post),
+              ),
+            ),
+          ],
         ),
       ),
     );
