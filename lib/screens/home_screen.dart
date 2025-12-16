@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Timer? _debounce;
   bool _initialized = false;
   String? _lastSearch;
   int _selectedIndex = 0;
@@ -28,6 +31,12 @@ class _HomeScreenState extends State<HomeScreen> {
       Provider.of<PostProvider>(context, listen: false).fetchPosts();
       _initialized = true;
     }
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
   }
 
   // ---------------- HOME TAB ----------------
@@ -50,7 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 35),
-              // Título
+
+              // TÍTULO
               Text(
                 'NovaExpress',
                 style: TextStyle(
@@ -60,8 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   letterSpacing: 1.2,
                 ),
               ),
+
               const SizedBox(height: 6),
-              // Subtítulo
+
+              // SUBTÍTULO
               Text(
                 'Noticias relevantes y actuales',
                 style: TextStyle(
@@ -70,8 +82,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
+
               const SizedBox(height: 14),
-              // 🔍 Buscador (ANTES de la imagen)
+
+              // 🔍 BUSCADOR
               NewsSearchBar(
                 initialValue: _lastSearch,
                 onSearch: (query) {
@@ -81,9 +95,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     listen: false,
                   ).fetchPosts(refresh: true, search: query);
                 },
+                onChanged: (query) {
+                  if (_debounce?.isActive ?? false) _debounce!.cancel();
+                  _debounce = Timer(const Duration(milliseconds: 400), () {
+                    _lastSearch = query;
+                    Provider.of<PostProvider>(
+                      context,
+                      listen: false,
+                    ).fetchPosts(refresh: true, search: query);
+                  });
+                },
               ),
+
               const SizedBox(height: 14),
-              // 🖼 Imagen header
+
+              // 🖼 IMAGEN HEADER
               ClipRRect(
                 borderRadius: BorderRadius.circular(18),
                 child: Image.asset(
@@ -93,7 +119,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   fit: BoxFit.cover,
                 ),
               ),
-              // 📰 Lista de noticias
+
+              const SizedBox(height: 10),
+
+              // 📰 LISTA DE NOTICIAS
               Consumer<PostProvider>(
                 builder: (context, provider, _) {
                   if (provider.status == PostStatus.loading) {
@@ -102,6 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: CircularProgressIndicator(),
                     );
                   }
+
                   if (provider.status == PostStatus.error) {
                     return Column(
                       children: [
@@ -113,7 +143,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppTheme.navSelected,
-                            foregroundColor: Colors.white,
                           ),
                           onPressed: () {
                             Provider.of<PostProvider>(
@@ -126,12 +155,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     );
                   }
+
                   if (provider.posts.isEmpty) {
                     return Padding(
                       padding: const EdgeInsets.only(top: 24),
                       child: Text(
                         _lastSearch != null && _lastSearch!.isNotEmpty
-                            ? 'No se encontraron noticias para "${_lastSearch!}".'
+                            ? 'No se encontraron noticias para "$_lastSearch".'
                             : 'No hay noticias disponibles.',
                         style: TextStyle(
                           fontSize: 16,
@@ -141,6 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     );
                   }
+
                   return ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -172,7 +203,6 @@ class _HomeScreenState extends State<HomeScreen> {
     };
 
     return Scaffold(
-      appBar: null,
       body: body,
       bottomNavigationBar: NewsBottomNavBar(
         currentIndex: _selectedIndex,

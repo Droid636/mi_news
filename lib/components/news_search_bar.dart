@@ -3,8 +3,14 @@ import '../app_theme.dart';
 
 class NewsSearchBar extends StatelessWidget {
   final ValueChanged<String> onSearch;
+  final ValueChanged<String>? onChanged;
   final String? initialValue;
-  const NewsSearchBar({super.key, required this.onSearch, this.initialValue});
+  const NewsSearchBar({
+    super.key,
+    required this.onSearch,
+    this.onChanged,
+    this.initialValue,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +36,7 @@ class NewsSearchBar extends StatelessWidget {
                 ),
                 textInputAction: TextInputAction.search,
                 onSubmitted: onSearch,
+                onChanged: onChanged,
                 style: const TextStyle(fontSize: 16),
               ),
             ),
