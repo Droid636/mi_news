@@ -54,36 +54,36 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 35),
+              const SizedBox(height: 40),
 
               // TÍTULO
               Text(
                 'NovaExpress',
                 style: TextStyle(
-                  fontSize: 32,
+                  fontSize: 34,
                   fontWeight: FontWeight.bold,
                   color: AppTheme.splashText,
                   letterSpacing: 1.2,
                 ),
               ),
 
-              const SizedBox(height: 6),
+              const SizedBox(height: 10),
 
               // SUBTÍTULO
               Text(
                 'Noticias relevantes y actuales',
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: 16,
                   color: AppTheme.splashLogoGlow,
                   fontWeight: FontWeight.w500,
                 ),
               ),
 
-              const SizedBox(height: 14),
+              const SizedBox(height: 22),
 
               // 🔍 BUSCADOR
               NewsSearchBar(
@@ -107,27 +107,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
 
-              const SizedBox(height: 14),
+              const SizedBox(height: 22),
 
               // 🖼 IMAGEN HEADER
               ClipRRect(
                 borderRadius: BorderRadius.circular(18),
                 child: Image.asset(
                   'assets/images/news_header.jpg',
-                  height: 160,
+                  height: 170,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
               ),
-
-              const SizedBox(height: 10),
 
               // 📰 LISTA DE NOTICIAS
               Consumer<PostProvider>(
                 builder: (context, provider, _) {
                   if (provider.status == PostStatus.loading) {
                     return const Padding(
-                      padding: EdgeInsets.only(top: 24),
+                      padding: EdgeInsets.only(top: 32),
                       child: CircularProgressIndicator(),
                     );
                   }
@@ -139,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           provider.errorMessage ?? 'Error desconocido',
                           style: TextStyle(color: AppTheme.navSelected),
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 16),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppTheme.navSelected,
@@ -176,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ? 'No se encontraron noticias para "$_lastSearch".'
                             : 'No hay noticias disponibles.',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 17,
                           color: AppTheme.navUnselected,
                         ),
                         textAlign: TextAlign.center,
