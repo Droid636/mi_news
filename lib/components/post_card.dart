@@ -22,18 +22,18 @@ class PostCard extends StatelessWidget {
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           decoration: BoxDecoration(
-            color: AppTheme.bookmarksCard,
-            borderRadius: BorderRadius.circular(12),
+            color: Colors.white.withOpacity(0.93),
+            borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.07),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
+                color: AppTheme.splashBackgroundTop.withOpacity(0.10),
+                blurRadius: 16,
+                offset: const Offset(0, 6),
               ),
             ],
             border: Border.all(
-              color: AppTheme.bookmarksBackground.withOpacity(0.13),
-              width: 1.2,
+              color: AppTheme.splashBackgroundBottom.withOpacity(0.10),
+              width: 1.1,
             ),
           ),
           child: Material(
@@ -96,10 +96,11 @@ class PostCard extends StatelessWidget {
                         children: [
                           Text(
                             post.title,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
                               fontSize: 17,
-                              color: AppTheme.bookmarksTitle,
+                              color: AppTheme.splashBackgroundTop,
+                              letterSpacing: 0.1,
                             ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -107,9 +108,10 @@ class PostCard extends StatelessWidget {
                           const SizedBox(height: 6),
                           Text(
                             'Publicado: $dateStr',
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: AppTheme.bookmarksSubtitle,
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: AppTheme.navSelected.withOpacity(0.85),
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ],

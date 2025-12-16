@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.bookmarksTitle,
+                  color: AppTheme.splashText,
                   letterSpacing: 1.2,
                 ),
               ),
@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 'Noticias relevantes y actuales',
                 style: TextStyle(
                   fontSize: 15,
-                  color: AppTheme.bookmarksSubtitle,
+                  color: AppTheme.splashLogoGlow,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -151,7 +151,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
-              const SizedBox(height: 8),
             ],
           ),
         ),
