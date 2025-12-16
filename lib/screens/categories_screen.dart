@@ -141,7 +141,19 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
   Widget build(BuildContext context) {
     if (_loadingCategories) {
-      return const Center(child: _CustomLoader());
+      return Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppTheme.splashBackgroundTop,
+              AppTheme.splashBackgroundBottom,
+            ],
+          ),
+        ),
+        child: const Center(child: _CustomLoader()),
+      );
     }
 
     if (_error != null && _categories.isEmpty) {
@@ -283,11 +295,54 @@ class _CustomLoaderState extends State<_CustomLoader>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 42,
-      height: 42,
-      child: CircularProgressIndicator(
-        strokeWidth: 4,
-        color: AppTheme.navSelected,
+      width: 48,
+      height: 48,
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          return Transform.rotate(
+            angle: _controller.value * 6.28319, // 2*PI
+            child: child,
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: SweepGradient(
+              colors: [
+                AppTheme.splashArc,
+                AppTheme.navSelected,
+                AppTheme.splashBackgroundTop,
+                AppTheme.splashArc.withOpacity(0.2),
+                AppTheme.splashArc,
+              ],
+              stops: const [0.0, 0.3, 0.6, 0.85, 1.0],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppTheme.splashArc.withOpacity(0.25),
+                blurRadius: 8,
+                spreadRadius: 1,
+              ),
+            ],
+          ),
+          child: Center(
+            child: Container(
+              width: 22,
+              height: 22,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppTheme.splashArc.withOpacity(0.10),
+                    blurRadius: 4,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
