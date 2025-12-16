@@ -189,7 +189,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: provider.posts.length,
                     itemBuilder: (context, index) {
-                      return PostCard(post: provider.posts[index]);
+                      return TweenAnimationBuilder<double>(
+                        key: ValueKey(provider.posts[index].id),
+                        tween: Tween(begin: 0, end: 1),
+                        duration: Duration(milliseconds: 400 + (index * 40)),
+                        builder: (context, value, child) => Opacity(
+                          opacity: value,
+                          child: Transform.translate(
+                            offset: Offset(0, 20 * (1 - value)),
+                            child: child,
+                          ),
+                        ),
+                        child: PostCard(post: provider.posts[index]),
+                      );
                     },
                   );
                 },

@@ -74,7 +74,19 @@ class BookmarksScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
               itemCount: bookmarks.length,
               itemBuilder: (context, index) {
-                return PostCard(post: bookmarks[index]);
+                return TweenAnimationBuilder<double>(
+                  key: ValueKey(bookmarks[index].id),
+                  tween: Tween(begin: 0, end: 1),
+                  duration: Duration(milliseconds: 400 + (index * 40)),
+                  builder: (context, value, child) => Opacity(
+                    opacity: value,
+                    child: Transform.translate(
+                      offset: Offset(0, 20 * (1 - value)),
+                      child: child,
+                    ),
+                  ),
+                  child: PostCard(post: bookmarks[index]),
+                );
               },
             );
           },
