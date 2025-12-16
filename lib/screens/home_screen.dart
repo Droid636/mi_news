@@ -29,53 +29,42 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  // ---------------- HOME TAB ----------------
   Widget _buildHomeTab() {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 24),
-            // Título centrado
-            Center(
-              child: Text(
-                'Mi News',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColor,
-                  letterSpacing: 1.2,
-                ),
+            const SizedBox(height: 35),
+
+            // Título
+            Text(
+              'Mi News',
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColor,
+                letterSpacing: 1.2,
               ),
             ),
-            const SizedBox(height: 8),
-            // Subtítulo centrado
-            Center(
-              child: Text(
-                'Noticias relevantes y actuales',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
-                  fontWeight: FontWeight.w500,
-                ),
+
+            const SizedBox(height: 6),
+
+            // Subtítulo
+            Text(
+              'Noticias relevantes y actuales',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.grey[600],
+                fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(height: 18),
-            // Imagen centrada
-            Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(18),
-                child: Image.asset(
-                  'assets/images/news_header.jpg',
-                  height: 170,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            const SizedBox(height: 18),
-            // Buscador
+
+            const SizedBox(height: 14),
+
+            // 🔍 Buscador (ANTES de la imagen)
             NewsSearchBar(
               initialValue: _lastSearch,
               onSearch: (query) {
@@ -86,44 +75,61 @@ class _HomeScreenState extends State<HomeScreen> {
                 ).fetchPosts(refresh: true, search: query);
               },
             ),
-            const SizedBox(height: 18),
-            // Lista de posts
+
+            const SizedBox(height: 14),
+
+            // 🖼 Imagen header
+            ClipRRect(
+              borderRadius: BorderRadius.circular(18),
+              child: Image.asset(
+                'assets/images/news_header.jpg',
+                height: 160,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+
+            // 📰 Lista de noticias
             Consumer<PostProvider>(
               builder: (context, provider, _) {
                 if (provider.status == PostStatus.loading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (provider.status == PostStatus.error) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(provider.errorMessage ?? 'Error desconocido'),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () {
-                            Provider.of<PostProvider>(
-                              context,
-                              listen: false,
-                            ).fetchPosts(refresh: true, search: _lastSearch);
-                          },
-                          child: const Text('Reintentar'),
-                        ),
-                      ],
-                    ),
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 24),
+                    child: CircularProgressIndicator(),
                   );
                 }
+
+                if (provider.status == PostStatus.error) {
+                  return Column(
+                    children: [
+                      Text(provider.errorMessage ?? 'Error desconocido'),
+                      const SizedBox(height: 12),
+                      ElevatedButton(
+                        onPressed: () {
+                          Provider.of<PostProvider>(
+                            context,
+                            listen: false,
+                          ).fetchPosts(refresh: true, search: _lastSearch);
+                        },
+                        child: const Text('Reintentar'),
+                      ),
+                    ],
+                  );
+                }
+
                 if (provider.posts.isEmpty) {
-                  return Center(
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 24),
                     child: Text(
                       _lastSearch != null && _lastSearch!.isNotEmpty
                           ? 'No se encontraron noticias para "${_lastSearch!}".'
                           : 'No hay noticias disponibles.',
-                      style: const TextStyle(fontSize: 18, color: Colors.grey),
+                      style: const TextStyle(fontSize: 16, color: Colors.grey),
                       textAlign: TextAlign.center,
                     ),
                   );
                 }
+
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -134,13 +140,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
             ),
-            const SizedBox(height: 18),
+
+            const SizedBox(height: 8),
           ],
         ),
       ),
     );
   }
 
+  // ---------------- TABS ----------------
   Widget _buildBookmarksTab() => const BookmarksScreen();
   Widget _buildCategoriesTab() => const CategoriesScreen();
 
