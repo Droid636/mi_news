@@ -157,8 +157,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
 
                   if (provider.posts.isEmpty) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 24),
+                    return Container(
+                      width: double.infinity,
+                      height: 220,
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            AppTheme.splashBackgroundTop,
+                            AppTheme.splashBackgroundBottom,
+                          ],
+                        ),
+                      ),
+                      alignment: Alignment.center,
                       child: Text(
                         _lastSearch != null && _lastSearch!.isNotEmpty
                             ? 'No se encontraron noticias para "$_lastSearch".'
@@ -203,7 +215,21 @@ class _HomeScreenState extends State<HomeScreen> {
     };
 
     return Scaffold(
-      body: body,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppTheme.splashBackgroundTop,
+              AppTheme.splashBackgroundBottom,
+            ],
+          ),
+        ),
+        child: body,
+      ),
       bottomNavigationBar: NewsBottomNavBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
