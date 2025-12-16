@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import '../models/post.dart';
 import '../components/post_card.dart';
+import '../app_theme.dart';
 
 class Category {
   final int id;
@@ -124,25 +125,69 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     }
     return Column(
       children: [
-        SizedBox(
-          height: 56,
-          child: ListView.builder(
+        Container(
+          height: 60,
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+          color: AppTheme.searchBackground,
+          child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: _categories.length,
+            separatorBuilder: (_, __) => const SizedBox(width: 6),
             itemBuilder: (context, index) {
               final cat = _categories[index];
               final selected = cat.id == _selectedCategoryId;
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                child: ChoiceChip(
-                  label: Text(cat.name),
-                  selected: selected,
-                  onSelected: (val) {
-                    setState(() {
-                      _selectedCategoryId = cat.id;
-                    });
-                    _fetchPosts(cat.id);
-                  },
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _selectedCategoryId = cat.id;
+                  });
+                  _fetchPosts(cat.id);
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 220),
+                  curve: Curves.easeOutCubic,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 18,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    gradient: selected
+                        ? LinearGradient(
+                            colors: [
+                              AppTheme.navSelected,
+                              AppTheme.splashBackgroundBottom,
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          )
+                        : null,
+                    color: selected ? null : Colors.white,
+                    borderRadius: BorderRadius.circular(22),
+                    border: Border.all(
+                      color: selected
+                          ? AppTheme.navSelected
+                          : AppTheme.searchBorder,
+                      width: selected ? 2.2 : 1.2,
+                    ),
+                    boxShadow: selected
+                        ? [
+                            BoxShadow(
+                              color: AppTheme.navSelected.withOpacity(0.13),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ]
+                        : [],
+                  ),
+                  child: Text(
+                    cat.name,
+                    style: TextStyle(
+                      color: selected ? Colors.white : AppTheme.bookmarksTitle,
+                      fontWeight: selected ? FontWeight.bold : FontWeight.w500,
+                      fontSize: 16,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
                 ),
               );
             },
