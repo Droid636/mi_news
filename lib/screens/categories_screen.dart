@@ -141,7 +141,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 8,
+                ),
                 child: Text(
                   'Categorías',
                   style: TextStyle(
@@ -197,7 +200,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                           boxShadow: selected
                               ? [
                                   BoxShadow(
-                                    color: AppTheme.navSelected.withOpacity(0.13),
+                                    color: AppTheme.navSelected.withOpacity(
+                                      0.13,
+                                    ),
                                     blurRadius: 8,
                                     offset: const Offset(0, 2),
                                   ),
@@ -207,8 +212,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         child: Text(
                           cat.name,
                           style: TextStyle(
-                            color: selected ? Colors.white : AppTheme.bookmarksTitle,
-                            fontWeight: selected ? FontWeight.bold : FontWeight.w500,
+                            color: selected
+                                ? Colors.white
+                                : AppTheme.bookmarksTitle,
+                            fontWeight: selected
+                                ? FontWeight.bold
+                                : FontWeight.w500,
                             fontSize: 16,
                             letterSpacing: 0.2,
                           ),
@@ -223,19 +232,19 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 child: _loadingPosts
                     ? const Center(child: CircularProgressIndicator())
                     : _posts.isEmpty && _selectedCategoryId != null
-                        ? Center(
-                            child: Text(
-                              _error ?? 'No hay noticias en esta categoría.',
-                              style: TextStyle(color: AppTheme.navUnselected),
-                            ),
-                          )
-                        : ListView.builder(
-                            itemCount: _posts.length,
-                            itemBuilder: (context, index) {
-                              final post = _posts[index];
-                              return PostCard(post: post);
-                            },
-                          ),
+                    ? Center(
+                        child: Text(
+                          _error ?? 'No hay noticias en esta categoría.',
+                          style: TextStyle(color: AppTheme.navUnselected),
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: _posts.length,
+                        itemBuilder: (context, index) {
+                          final post = _posts[index];
+                          return PostCard(post: post);
+                        },
+                      ),
               ),
             ],
           ),
