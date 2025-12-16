@@ -48,7 +48,12 @@ class AppTheme {
   static const Color bookmarksCard = Colors.white; // fondo de tarjeta
   static const Color bookmarksTitle = Color(0xFF22306C); // azul oscuro
   static const Color bookmarksSubtitle = Color(0xFF3578C6); // azul rey
-  static const Color bookmarksEmptyIcon = Color(0xFFB0B8C1); // gris azulado
+  static const Color bookmarksEmptyIcon = Color.fromARGB(
+    255,
+    133,
+    182,
+    237,
+  ); // gris azulado
 
   static ThemeData get lightTheme {
     return ThemeData(

@@ -58,15 +58,7 @@ class BookmarksScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
             itemCount: bookmarks.length,
             itemBuilder: (context, index) {
-              return Card(
-                color: AppTheme.bookmarksCard,
-                elevation: 2,
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: PostCard(post: bookmarks[index]),
-              );
+              return PostCard(post: bookmarks[index]);
             },
           );
         },
