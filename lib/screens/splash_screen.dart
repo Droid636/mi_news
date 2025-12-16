@@ -70,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             SizedBox(height: 32),
             // Loader
-            CircularProgressIndicator(color: AppTheme.splashLogoGlow),
+            _CustomLoader(),
           ],
         ),
       ),
@@ -78,4 +78,79 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
-// (Clase _ArcPainter eliminada porque ya no se usa)
+// ================= LOADER PERSONALIZADO =================
+class _CustomLoader extends StatefulWidget {
+  const _CustomLoader();
+
+  @override
+  State<_CustomLoader> createState() => _CustomLoaderState();
+}
+
+class _CustomLoaderState extends State<_CustomLoader>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(seconds: 1),
+  )..repeat();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 48,
+      height: 48,
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          return Transform.rotate(
+            angle: _controller.value * 6.28319, // 2*PI
+            child: child,
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: SweepGradient(
+              colors: [
+                AppTheme.splashArc,
+                AppTheme.navSelected,
+                AppTheme.splashBackgroundTop,
+                AppTheme.splashArc.withOpacity(0.2),
+                AppTheme.splashArc,
+              ],
+              stops: const [0.0, 0.3, 0.6, 0.85, 1.0],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppTheme.splashArc.withOpacity(0.25),
+                blurRadius: 8,
+                spreadRadius: 1,
+              ),
+            ],
+          ),
+          child: Center(
+            child: Container(
+              width: 22,
+              height: 22,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppTheme.splashArc.withOpacity(0.10),
+                    blurRadius: 4,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
