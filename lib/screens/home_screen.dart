@@ -36,20 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 18),
-            // Imagen centrada
-            Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(18),
-                child: Image.asset(
-                  'assets/images/news_header.jpg',
-                  height: 170,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 24),
             // Título centrado
             Center(
               child: Text(
@@ -71,6 +58,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontSize: 16,
                   color: Colors.grey[600],
                   fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            const SizedBox(height: 18),
+            // Imagen centrada
+            Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(18),
+                child: Image.asset(
+                  'assets/images/news_header.jpg',
+                  height: 170,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -154,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
     };
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Noticias Recientes')),
+      appBar: null,
       body: body,
       bottomNavigationBar: NewsBottomNavBar(
         currentIndex: _selectedIndex,
