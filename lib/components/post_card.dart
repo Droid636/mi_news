@@ -41,15 +41,39 @@ class PostCard extends StatelessWidget {
             child: InkWell(
               borderRadius: BorderRadius.circular(12),
               onTap: () {
-                showModalBottomSheet(
+                showGeneralDialog(
                   context: context,
-                  isScrollControlled: true,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20),
-                    ),
-                  ),
-                  builder: (context) => PostDetailModal(post: post),
+                  barrierLabel: "Detalle Noticia",
+                  barrierDismissible: true,
+                  barrierColor: Colors.black.withOpacity(0.3),
+                  transitionDuration: const Duration(milliseconds: 350),
+                  pageBuilder: (context, anim1, anim2) {
+                    return Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: FractionallySizedBox(
+                          heightFactor: 0.95,
+                          child: PostDetailModal(post: post),
+                        ),
+                      ),
+                    );
+                  },
+                  transitionBuilder: (context, anim1, anim2, child) {
+                    return SlideTransition(
+                      position:
+                          Tween<Offset>(
+                            begin: const Offset(0, 1),
+                            end: Offset.zero,
+                          ).animate(
+                            CurvedAnimation(
+                              parent: anim1,
+                              curve: Curves.easeOutCubic,
+                            ),
+                          ),
+                      child: child,
+                    );
+                  },
                 );
               },
               child: Padding(
