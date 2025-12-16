@@ -142,7 +142,31 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     }
 
     if (_error != null && _categories.isEmpty) {
-      return Center(child: Text(_error!));
+      return Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppTheme.splashBackgroundTop,
+              AppTheme.splashBackgroundBottom,
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Center(
+            child: Text(
+              _error!,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      );
     }
 
     return Container(
