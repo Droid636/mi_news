@@ -11,61 +11,74 @@ class PostDetailModal extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(18)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.08),
-            blurRadius: 18,
-            offset: const Offset(0, -4),
+            blurRadius: 14,
+            offset: const Offset(0, -2),
           ),
         ],
       ),
       child: SafeArea(
         top: false,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 12,
-                left: 16,
-                right: 8,
-                bottom: 0,
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Detalle de noticia',
-                      style: TextStyle(
-                        fontFamily: 'Merriweather',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Color(0xFF22306C),
-                        letterSpacing: 1.1,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(
+            // Contenido principal scrollable
+            // Botón cerrar flotante
+            Positioned(
+              top: 10,
+              right: 16,
+              child: Material(
+                color: Colors.white,
+                shape: const CircleBorder(),
+                elevation: 4,
+                child: InkWell(
+                  customBorder: const CircleBorder(),
+                  onTap: () => Navigator.of(context).pop(),
+                  child: const Padding(
+                    padding: EdgeInsets.all(6),
+                    child: Icon(
                       Icons.close_rounded,
-                      size: 28,
+                      size: 26,
                       color: Color(0xFF3578C6),
                     ),
-                    onPressed: () => Navigator.of(context).pop(),
-                    tooltip: 'Cerrar',
                   ),
-                ],
+                ),
               ),
             ),
-            const Divider(height: 1, thickness: 1, color: Color(0xFFE0E6ED)),
-            Flexible(
+            // Contenido principal scrollable
+            Padding(
+              padding: const EdgeInsets.only(top: 48),
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 18,
-                  vertical: 18,
+                  horizontal: 12,
+                  vertical: 10,
                 ),
                 child: PostDetailScreen(post: post),
+              ),
+            ),
+
+            // Botón cerrar flotante
+            Positioned(
+              top: 10,
+              right: 16,
+              child: Material(
+                color: Colors.white,
+                shape: const CircleBorder(),
+                elevation: 4,
+                child: InkWell(
+                  customBorder: const CircleBorder(),
+                  onTap: () => Navigator.of(context).pop(),
+                  child: const Padding(
+                    padding: EdgeInsets.all(6),
+                    child: Icon(
+                      Icons.close_rounded,
+                      size: 26,
+                      color: Color(0xFF3578C6),
+                    ),
+                  ),
+                ),
               ),
             ),
           ],
