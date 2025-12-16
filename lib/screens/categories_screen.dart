@@ -65,6 +65,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
     setState(() {
       _loadingCategories = false;
+      if (_categories.isNotEmpty) {
+        _selectedCategoryId = _categories.first.id;
+        _fetchPosts(_selectedCategoryId!);
+      }
     });
   }
 
@@ -84,7 +88,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       final response = await _dio.get(
         'posts',
         queryParameters: {
-          'categories': categoryId,
+          if (categoryId != -1) 'categories': categoryId,
           '_embed': 1,
           'per_page': 10,
         },
