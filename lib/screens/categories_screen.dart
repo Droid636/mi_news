@@ -219,27 +219,34 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   final cat = _categories[index];
                   final selected = cat.id == _selectedCategoryId;
 
-                  return ChoiceChip(
-                    label: Text(cat.name),
-                    selected: selected,
-                    onSelected: (_) {
-                      setState(() {
-                        _selectedCategoryId = cat.id;
-                      });
-                      _fetchPosts(cat.id);
-                    },
-                    selectedColor: AppTheme.navSelected,
-                    backgroundColor: Colors.white,
-                    labelStyle: TextStyle(
-                      color: selected ? Colors.white : AppTheme.bookmarksTitle,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    shape: StadiumBorder(
-                      side: BorderSide(
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    margin: EdgeInsets.zero,
+                    child: ChoiceChip(
+                      label: Text(cat.name),
+                      selected: selected,
+                      onSelected: (_) {
+                        setState(() {
+                          _selectedCategoryId = cat.id;
+                        });
+                        _fetchPosts(cat.id);
+                      },
+                      selectedColor: AppTheme.navSelected,
+                      backgroundColor: Colors.white,
+                      labelStyle: TextStyle(
                         color: selected
-                            ? AppTheme.navSelected
-                            : AppTheme.searchBorder,
-                        width: selected ? 2 : 1,
+                            ? Colors.white
+                            : AppTheme.bookmarksTitle,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      shape: StadiumBorder(
+                        side: BorderSide(
+                          color: selected
+                              ? AppTheme.navSelected
+                              : AppTheme.searchBorder,
+                          width: selected ? 2 : 1,
+                        ),
                       ),
                     ),
                   );
@@ -275,7 +282,21 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         padding: const EdgeInsets.only(top: 8),
                         itemCount: _posts.length,
                         itemBuilder: (context, index) {
-                          return PostCard(post: _posts[index]);
+                          return TweenAnimationBuilder<double>(
+                            key: ValueKey(_posts[index].id),
+                            tween: Tween(begin: 0, end: 1),
+                            duration: Duration(
+                              milliseconds: 400 + (index * 40),
+                            ),
+                            builder: (context, value, child) => Opacity(
+                              opacity: value,
+                              child: Transform.translate(
+                                offset: Offset(0, 20 * (1 - value)),
+                                child: child,
+                              ),
+                            ),
+                            child: PostCard(post: _posts[index]),
+                          );
                         },
                       ),
               ),
