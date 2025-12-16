@@ -33,7 +33,16 @@ class _HomeScreenState extends State<HomeScreen> {
   // ---------------- HOME TAB ----------------
   Widget _buildHomeTab() {
     return Container(
-      color: AppTheme.splashBackgroundTop.withOpacity(0.03),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            AppTheme.splashBackgroundTop,
+            AppTheme.splashBackgroundBottom,
+          ],
+        ),
+      ),
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
