@@ -253,22 +253,32 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             // LISTA DE NOTICIAS
             // ===============================
             Expanded(
-              child: _loadingPosts
-                  ? const Center(child: CircularProgressIndicator())
-                  : _posts.isEmpty && _selectedCategoryId != null
-                  ? Center(
-                      child: Text(
-                        _error ?? 'No hay noticias en esta categoría.',
-                        style: TextStyle(color: AppTheme.navUnselected),
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 400),
+                switchInCurve: Curves.easeOutCubic,
+                switchOutCurve: Curves.easeInCubic,
+                child: _loadingPosts
+                    ? const Center(
+                        key: ValueKey('loading'),
+                        child: CircularProgressIndicator(),
+                      )
+                    : _posts.isEmpty && _selectedCategoryId != null
+                    ? Center(
+                        key: ValueKey('empty'),
+                        child: Text(
+                          _error ?? 'No hay noticias en esta categoría.',
+                          style: TextStyle(color: AppTheme.navUnselected),
+                        ),
+                      )
+                    : ListView.builder(
+                        key: ValueKey('list_${_selectedCategoryId ?? 'none'}'),
+                        padding: const EdgeInsets.only(top: 8),
+                        itemCount: _posts.length,
+                        itemBuilder: (context, index) {
+                          return PostCard(post: _posts[index]);
+                        },
                       ),
-                    )
-                  : ListView.builder(
-                      padding: const EdgeInsets.only(top: 8),
-                      itemCount: _posts.length,
-                      itemBuilder: (context, index) {
-                        return PostCard(post: _posts[index]);
-                      },
-                    ),
+              ),
             ),
           ],
         ),
