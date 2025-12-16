@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   // =====================
-  // Colores de navegación
+  // Colores de navegación (BottomNavigationBar)
   // =====================
-  // (Aquí puedes agregar colores para la nav bar, etc)
+  static const Color navBackground = Color(
+    0xFF141A32,
+  ); // igual que splashBackgroundTop
+  static const Color navSelected = Color(0xFF3578C6); // azul rey
+  static const Color navUnselected = Color(0xFFB0B8C1); // gris azulado
+  static const Color navIconSelected = Color(0xFF3578C6); // azul rey
+  static const Color navIconUnselected = Color(0xFFB0B8C1); // gris azulado
 
   // =====================
   // Colores del SplashScreen
