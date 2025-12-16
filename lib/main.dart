@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => BookmarksProvider()),
       ],
       child: MaterialApp(
-        title: 'Mi News',
+        title: 'NovaExpress',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),
